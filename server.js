@@ -37,9 +37,9 @@ app.delete('/blog-posts/:id', (req, res) => {
 
 app.put('/blog-posts/:id', jsonParser, (req, res) => {
   // console.log(req.body.title);
-  // console.log(req.body.content);
+  console.log(req.body.content);
   // console.log(req.body.author);
-  // console.log(req.body.publishDate);
+  console.log(req.body.publishDate);
   BlogPosts.update({
   id: req.params.id,
   title: req.body.title,
