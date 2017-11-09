@@ -54,7 +54,7 @@ app.get('/blog-posts/:id', (req, res) => {
 
 app.post('/blog-posts', (req, res) => {
 
-  const requiredFields = ['name', 'borough', 'cuisine'];
+  const requiredFields = ['title', 'content', 'author'];
   for (let i=0; i<requiredFields.length; i++) {
     const field = requiredFields[i];
     if (!(field in req.body)) {
@@ -66,13 +66,11 @@ app.post('/blog-posts', (req, res) => {
 
   Post
     .create({
-      name: req.body.name,
-      borough: req.body.borough,
-      cuisine: req.body.cuisine,
-      grades: req.body.grades,
-      address: req.body.address})
+      title: req.body.title,
+      content: req.body.content,
+      author: req.body.author})
     .then(
-      restaurant => res.status(201).json(restaurant.apiRepr()))
+      post => res.status(201).json(post.apiRepr()))
     .catch(err => {
       console.error(err);
       res.status(500).json({message: 'Internal server error'});
@@ -80,7 +78,7 @@ app.post('/blog-posts', (req, res) => {
 });
 
 
-app.put('/restaurants/:id', (req, res) => {
+app.put('/blog-posts/:id', (req, res) => {
   // ensure that the id in the request path and the one in request body match
   if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
     const message = (
@@ -94,7 +92,7 @@ app.put('/restaurants/:id', (req, res) => {
   // if the user sent over any of the updatableFields, we udpate those values
   // in document
   const toUpdate = {};
-  const updateableFields = ['name', 'borough', 'cuisine', 'address'];
+  const updateableFields = ['title', 'content', 'author'];
 
   updateableFields.forEach(field => {
     if (field in req.body) {
@@ -102,17 +100,17 @@ app.put('/restaurants/:id', (req, res) => {
     }
   });
 
-  Restaurant
+  Post
     // all key/value pairs in toUpdate will be updated -- that's what `$set` does
     .findByIdAndUpdate(req.params.id, {$set: toUpdate})
-    .then(restaurant => res.status(204).end())
+    .then(post => res.status(204).end())
     .catch(err => res.status(500).json({message: 'Internal server error'}));
 });
 
-app.delete('/restaurants/:id', (req, res) => {
-  Restaurant
+app.delete('/blog-posts/:id', (req, res) => {
+  Post
     .findByIdAndRemove(req.params.id)
-    .then(restaurant => res.status(204).end())
+    .then(post => res.status(204).end())
     .catch(err => res.status(500).json({message: 'Internal server error'}));
 });
 

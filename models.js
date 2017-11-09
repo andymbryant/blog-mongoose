@@ -7,8 +7,7 @@ const postSchema = mongoose.Schema({
   author: {
     firstName: String,
     lastName: String
-    },
-  created: {type: String, required: true}
+    }
 });
 
 
@@ -20,8 +19,7 @@ postSchema.methods.apiRepr = function() {
   return {
     title: this.title,
     content: this.content,
-    author: this.authorString,
-    created: this.created
+    author: this.authorString
   };
 }
 
